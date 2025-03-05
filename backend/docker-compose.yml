@@ -1,0 +1,21 @@
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+  web:
+    build: .
+    volumes:
+      - .:/code
+    command: ["/bin/sh", "-c", "./code/setup_django.sh"]
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+
+volumes:
+  postgres_data:
